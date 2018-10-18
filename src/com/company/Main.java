@@ -17,6 +17,9 @@ public class Main {
 
         //create an ArrayList to store users
         ArrayList<User> users = new ArrayList<>();
+        //Adding elements into ArrayList
+        users.add(new User(45678, "Andrey", "75935793565"));
+        users.add(new User(45675, "Lora", "563658765783"));
 
 
         while (true) {
@@ -31,14 +34,15 @@ public class Main {
                 String password = scan.nextLine();
                 for (User eachUser : users) {
                     if ((userName.equalsIgnoreCase(eachUser.getUserName()) && (password.equalsIgnoreCase(eachUser.getPassword())))) {
-                        System.out.println("You logged in!");
+                        Role role = selectRole(roles);
+                        System.out.println("You logged in as " + role.getName());
 
                     } else {
                         break;
                     }
                 }
             } else if (answer.equalsIgnoreCase("addrole")) {
-                Role newRole = addnewRole(null, users);
+                Role newRole = addnewRole( users);
                 roles.add(newRole);
             } else if (answer.equalsIgnoreCase("adduser")) {
                 User newUser = addNewUser(roles);
@@ -46,7 +50,7 @@ public class Main {
             } else if (answer.equalsIgnoreCase("listroles")) {
                 System.out.println("--------Role list-------");
                 for (Role eachRole : roles) {
-                    System.out.println(eachRole);
+                    System.out.println(eachRole + ", users: " + eachRole.getUsers());
                 }
             } else if (answer.equalsIgnoreCase("listusers")) {
                 System.out.println("---------User list---------");
@@ -59,7 +63,7 @@ public class Main {
         }
     }
 
-    public static Role addnewRole(User definedUser, ArrayList<User> users) {
+    public static Role addnewRole( ArrayList<User> users) {
         Role newRole = new Role();
         Scanner scan = new Scanner(System.in);
 
@@ -70,10 +74,8 @@ public class Main {
         System.out.println("Enter ID");
         Long id = scan.nextLong();
         newRole.setId(id);
-        User user = (definedUser == null) ? selectUser(users) : definedUser;
 
-        newRole.setUser(user);
-        System.out.println("new role: " + newRole);
+        assignUserToRole(newRole, users);
 
         return newRole;
 
@@ -114,6 +116,17 @@ public class Main {
         return user;
 
     }
+    public static Role assignUserToRole(Role role, ArrayList<User> users) {
+        while (true) {
+            User user = selectUser(users);
+            if (user == null) {
+                break;
+            }
+            role.assignUser(user);
+        }
+        return role;
+
+    }
 
 
     public static User addNewUser(ArrayList<Role> roles) {
@@ -135,24 +148,7 @@ public class Main {
         assignRolesToUser(newUser, roles);
 
 
-/*
-        while (true) {
 
-            System.out.println("add role? y/n ");
-            String answer = scan.nextLine();
-            if (answer.equalsIgnoreCase("y")) {
-
-                Role newRole = addnewRole(newUser, null);
-                roles.add(newRole);
-
-            } else {
-
-                break;
-
-            }
-
-        }
-*/
         return newUser;
     }
 }

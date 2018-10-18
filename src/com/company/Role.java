@@ -1,9 +1,15 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class Role {
     private long id;
     private String name;
-    private User user;
+    private ArrayList<User> users = new ArrayList<>();
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
     public Role(){
 
@@ -31,12 +37,11 @@ public class Role {
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void assignUser(User user) {
+        if (user != null && !users.contains(user)) {
+            users.add(user);
+        }
     }
 
     @Override
