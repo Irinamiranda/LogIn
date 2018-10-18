@@ -1,10 +1,13 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class User {
     private long id;
     private String userName;
     private String password;
-    private Role role;
+    private ArrayList<Role> roles = new ArrayList<>();
+
 
     public User(){
 
@@ -40,12 +43,14 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public ArrayList<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void assignRole(Role role) {
+        if (role != null && !roles.contains(role)) {
+            roles.add(role);
+        }
     }
 
     @Override

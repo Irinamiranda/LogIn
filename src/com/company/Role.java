@@ -7,6 +7,7 @@ public class Role {
 
     public Role(){
 
+
     }
     public Role(long id, String name){
         this.id = id;

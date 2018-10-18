@@ -9,14 +9,14 @@ public class Main {
 
     public static void main(String[] args) {
         //create an ArrayList to store Roles
-        ArrayList<Role> roles = new ArrayList<Role>();
+        ArrayList<Role> roles = new ArrayList<>();
         //Adding elements into HashSet
         roles.add(new Role(12345, "Admin"));
         roles.add(new Role(12456, "Editor"));
         roles.add(new Role(13456, "Contributor"));
 
         //create an ArrayList to store users
-        ArrayList<User> users = new ArrayList<User>();
+        ArrayList<User> users = new ArrayList<>();
 
 
         while (true) {
@@ -37,27 +37,27 @@ public class Main {
                         break;
                     }
                 }
-            }else if (answer.equalsIgnoreCase("addrole")) {
-                        Role newRole = addnewRole(null, users);
-                        roles.add(newRole);
-                    } else if (answer.equalsIgnoreCase("adduser")) {
-                        User newUser = addnewUser(roles);
-                        users.add(newUser);
-                    } else if (answer.equalsIgnoreCase("listroles")) {
-                        System.out.println("--------Role list-------");
-                        for (Role eachRole : roles) {
-                            System.out.println(eachRole.toString());
-                        }
-                    } else if (answer.equalsIgnoreCase("listusers")) {
-                        System.out.println("---------User list---------");
-                        for (User eachuser : users) {
-                            System.out.println(eachuser.toString());
-                        }
-                    } else if (answer.equalsIgnoreCase("exit")) {
-                        break;
-                    }
+            } else if (answer.equalsIgnoreCase("addrole")) {
+                Role newRole = addnewRole(null, users);
+                roles.add(newRole);
+            } else if (answer.equalsIgnoreCase("adduser")) {
+                User newUser = addNewUser(roles);
+                users.add(newUser);
+            } else if (answer.equalsIgnoreCase("listroles")) {
+                System.out.println("--------Role list-------");
+                for (Role eachRole : roles) {
+                    System.out.println(eachRole);
                 }
+            } else if (answer.equalsIgnoreCase("listusers")) {
+                System.out.println("---------User list---------");
+                for (User eachuser : users) {
+                    System.out.println(eachuser + ", roles: " + eachuser.getRoles());
+                }
+            } else if (answer.equalsIgnoreCase("exit")) {
+                break;
             }
+        }
+    }
 
     public static Role addnewRole(User definedUser, ArrayList<User> users) {
         Role newRole = new Role();
@@ -91,8 +91,32 @@ public class Main {
 
     }
 
+    public static Role selectRole(ArrayList<Role> roles) {
+        System.out.println("----");
+        for (int i = 0; i < roles.size(); i++) {
+            Role a = roles.get(i);
+            System.out.println((i + 1) + ": " + a);
+        }
+        System.out.println("Please select a role (or 0 to skip):");
+        int idx = new Scanner(System.in).nextInt();
+        return idx == 0 ? null : roles.get(idx - 1);
 
-    public static User addnewUser(ArrayList<Role> roles) {
+    }
+
+    public static User assignRolesToUser(User user, ArrayList<Role> roles) {
+        while (true) {
+            Role role = selectRole(roles);
+            if (role == null) {
+                break;
+            }
+            user.assignRole(role);
+        }
+        return user;
+
+    }
+
+
+    public static User addNewUser(ArrayList<Role> roles) {
         User newUser = new User();
 
         System.out.println("Enter your username");
@@ -108,6 +132,10 @@ public class Main {
         long id = scan.nextLong();
         newUser.setId(id);
 
+        assignRolesToUser(newUser, roles);
+
+
+/*
         while (true) {
 
             System.out.println("add role? y/n ");
@@ -124,6 +152,7 @@ public class Main {
             }
 
         }
+*/
         return newUser;
     }
 }
